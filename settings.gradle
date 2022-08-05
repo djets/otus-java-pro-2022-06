@@ -1,19 +1,10 @@
-rootProject.name = 'otusJava'
-include 'L01-gradle'
+rootProject.name = 'otus-java-pro-2022-06'
+include 'hw01-gradle'
 
-include 'L02-gradle2'
-include 'L02-gradle2-libApi'
-include 'L02-gradle2-libApiUse'
+//include 'hw04-generics'
+//include 'hw06-annotations'
+//include 'hw08-gc:homework'
 
-include 'L03-qa'
-include 'L04-generics'
-include 'L05-collections'
-include 'L06-annotations'
-
-include 'L08-gc:demo'
-include 'L08-gc:homework'
-
-//include 'L09-docker'
-
-include 'L10-byteCodes'
+//include 'hw09-docker'
+//include 'hw10-byteCodes'
 
