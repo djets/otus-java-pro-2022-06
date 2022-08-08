@@ -1,4 +1,4 @@
-rootProject.name = 'otus-java-pro-2022-06'
+rootProject.name = 'java-pro-2022-06'
 include 'hw01-gradle'
 
 //include 'hw04-generics'

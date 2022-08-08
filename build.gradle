@@ -18,6 +18,9 @@ allprojects {
                 mavenBom "com.google.protobuf:protobuf-bom:3.21.1"
             }
             dependency "com.google.guava:guava:${Versions.guava}"
+            dependency "org.assertj:assertj-core:${Versions.assertjCore}"
+            dependency "org.junit.jupiter:junit-jupiter-api:${Versions.unitJupiterApi}"
+            dependency "org.junit.jupiter:junit-jupiter-engine:${Versions.unitJupiterEngine}"
         }
     }
 }
