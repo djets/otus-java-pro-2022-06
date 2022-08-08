@@ -1,4 +1,4 @@
-# Домшние задания для курса OTUS ["Разработчик Java"](https://otus.ru/lessons/java-professional/?utm_source=github&utm_medium=free&utm_campaign=otus)
+# Homeworks for the OTUS course ["Developer Java.Pro"]
 
 
 Группа 2022-06
@@ -6,9 +6,3 @@
 ### Студент
 Янкович Константин
 
-### Преподаватели
-Сергей Петрелевич<br>
-Стрекалов Павел<br>
-Александр Оруджев<br>
-Вячеслав Лапин<br>
-Виталий Куценко
