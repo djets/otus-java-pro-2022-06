@@ -1,6 +1,5 @@
 package homework;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +26,7 @@ class CustomerTest {
     }
 
     @Test
-    @Disabled //надо удалить
+//    @Disabled //надо удалить
     @DisplayName("Объект Customer как ключ в карте")
     void customerAsKeyTest() {
         //given
@@ -41,10 +40,8 @@ class CustomerTest {
         //when
         long newScore = customer.getScores() + 10;
         String factData = map.get(new Customer(customerId, "IvanChangedName", newScore));
-
         //then
         assertThat(factData).isEqualTo(expectedData);
-
         //when
         long newScoreSecond = customer.getScores() + 20;
         customer.setScores(newScoreSecond);
@@ -72,7 +69,6 @@ class CustomerTest {
         Map.Entry<Customer, String> smallestScore = customerService.getSmallest();
         //then
         assertThat(smallestScore.getKey()).isEqualTo(customer2);
-        System.out.println("passed");
         //when
         // подсказка:
         // a key-value mapping associated with the least key strictly greater than the given key, or null if there is no such key.
@@ -81,12 +77,10 @@ class CustomerTest {
         assertThat(middleScore.getKey()).isEqualTo(customer1);
         middleScore.getKey().setScores(10000);
         middleScore.getKey().setName("Vasy");
-
         //when
         Map.Entry<Customer, String> biggestScore = customerService.getNext(customer1);
         //then
         assertThat(biggestScore.getKey()).isEqualTo(customer3);
-
         //when
         Map.Entry<Customer, String> notExists = customerService.getNext(new Customer(100, "Not exists", 20000));
         //then
@@ -95,7 +89,7 @@ class CustomerTest {
     }
 
     @Test
-    @Disabled //надо удалить
+//    @Disabled //надо удалить
     @DisplayName("Модификация коллекции")
     void mutationTest() {
         //given
