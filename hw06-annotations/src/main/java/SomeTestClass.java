@@ -1,20 +1,30 @@
 public class SomeTestClass {
     @Before
-    public String methodOne(){
-        return "Setup before running test";
+    public void methodOne() {
+        System.out.println("Setup one \"@Before\" running test");
     }
 
-    public static void methodTwo() {}
+    //    @Before
+    public static void methodTwo() {
+//        System.out.println("Setup two \"@Before\" running test");
+//        throw new RuntimeException("Setup two \"@Before\" fail");
+    }
+
     @Test
     private static void methodTree() {
         throw new RuntimeException("Exception throw");
     }
+
     @Test
-    public static void methodFour() {}
+    public static void methodFour() {
+    }
+
     @Test
-    protected void methodFive() {}
+    protected void methodFive() {
+    }
+
     @After
-    private String methodSix() {
-        return "The test is completed";
+    private void methodSix() {
+        System.out.println("The test is finished");
     }
 }
