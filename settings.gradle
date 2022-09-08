@@ -2,10 +2,8 @@ rootProject.name = 'java-pro-2022-06'
 include 'hw01-gradle'
 
 include 'hw04-generics'
-//include 'hw06-annotations'
+include 'hw06-annotations'
 //include 'hw08-gc:homework'
 
 //include 'hw09-docker'
 //include 'hw10-byteCodes'
-
-
