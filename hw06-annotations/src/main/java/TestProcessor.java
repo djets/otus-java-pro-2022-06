@@ -1,7 +1,6 @@
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class TestProcessor {
@@ -15,7 +14,7 @@ public class TestProcessor {
         this.nameTestClass = nameTestClass;
     }
 
-    private Object instantiation(String nameTestClass) {
+    private Object getInstanceClass(String nameTestClass) {
         try {
             Class<?> clazz = Class.forName(nameTestClass);
             return clazz.getDeclaredConstructor().newInstance();
@@ -24,22 +23,26 @@ public class TestProcessor {
         }
     }
 
-    private void getDeclaredMethodMarkedAnnotations() {
-        var methodsMarkedAnnotations = Arrays.stream(instantiation(nameTestClass).getClass()
-                .getDeclaredMethods()).filter(method -> method.getDeclaredAnnotations().length > 0).toList();
-        for (Method method : methodsMarkedAnnotations) {
-            if (method.isAnnotationPresent(Before.class)) methodsMarkedAnnotatedBefore.add(method);
-            if (method.isAnnotationPresent(Test.class)) methodsMarkedAnnotatedTest.add(method);
-            if (method.isAnnotationPresent(After.class)) methodsMarkedAnnotatedAfter.add(method);
+    private void getDeclaredMethodMarkedAnnotations() throws ClassNotFoundException {
+        for (Method method : Class.forName(nameTestClass).getDeclaredMethods()) {
+            if (method.isAnnotationPresent(Before.class)) {
+                methodsMarkedAnnotatedBefore.add(method);
+            }
+            if (method.isAnnotationPresent(Test.class)) {
+                methodsMarkedAnnotatedTest.add(method);
+            }
+            if (method.isAnnotationPresent(After.class)) {
+                methodsMarkedAnnotatedAfter.add(method);
+            }
         }
     }
 
-    private void executeOfMethodAnnotatedBeforeAndAfter(String annotation, Object instanceTestClass) {
-        List<Method> getListMethodsMarkedAnnotated = new ArrayList<>();
-        switch (annotation) {
-            case "Before" -> getListMethodsMarkedAnnotated = methodsMarkedAnnotatedBefore;
-            case "After" -> getListMethodsMarkedAnnotated = methodsMarkedAnnotatedAfter;
-        }
+    private void executeOfMethodAnnotatedBeforeAndAfter(List<Method> getListMethodsMarkedAnnotated, Object instanceTestClass) {
+//        List<Method> getListMethodsMarkedAnnotated = new ArrayList<>();
+//        switch (annotation) {
+//            case "Before" -> getListMethodsMarkedAnnotated = methodsMarkedAnnotatedBefore;
+//            case "After" -> getListMethodsMarkedAnnotated = methodsMarkedAnnotatedAfter;
+//        }
 
         getListMethodsMarkedAnnotated.forEach(method -> {
             try {
@@ -54,13 +57,17 @@ public class TestProcessor {
     void executeOfMethodAnnotatedTest() {
         int tests = 0;
         int testPassed = 0;
-        getDeclaredMethodMarkedAnnotations();
+        try {
+            getDeclaredMethodMarkedAnnotations();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Class not found");
+        }
 
         for (Method methodWithTestAnnotation : methodsMarkedAnnotatedTest) {
             tests++;
-            Object instanceTestClass = instantiation(nameTestClass);
+            Object instanceTestClass = getInstanceClass(nameTestClass);
             try {
-                executeOfMethodAnnotatedBeforeAndAfter("Before", instanceTestClass);
+                executeOfMethodAnnotatedBeforeAndAfter(methodsMarkedAnnotatedBefore, instanceTestClass);
                 methodWithTestAnnotation.setAccessible(true);
                 methodWithTestAnnotation.invoke(instanceTestClass);
                 System.out.printf("Running Test. Method - %s%n", methodWithTestAnnotation.getName());
@@ -70,7 +77,7 @@ public class TestProcessor {
             } catch (InvocationTargetException | IllegalAccessException e) {
                 System.out.println(methodWithTestAnnotation + " failed: " + e.getCause());
             } finally {
-                executeOfMethodAnnotatedBeforeAndAfter("After", instanceTestClass);
+                executeOfMethodAnnotatedBeforeAndAfter(methodsMarkedAnnotatedAfter, instanceTestClass);
             }
         }
 
