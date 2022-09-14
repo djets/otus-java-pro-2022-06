@@ -3,7 +3,9 @@ include 'hw01-gradle'
 
 include 'hw04-generics'
 include 'hw06-annotations'
-//include 'hw08-gc:homework'
+include 'hw08-gc'
 
 //include 'hw09-docker'
 //include 'hw10-byteCodes'
+include 'hw08-gc'
+
