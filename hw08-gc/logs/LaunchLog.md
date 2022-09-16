@@ -32,7 +32,6 @@
 - java.vm.version=17.0.2+9-LTS
 - Ubuntu 22.04/Core 6\12/16Gb
 
-
 **-Xms512 -Xmx512**
 
 
