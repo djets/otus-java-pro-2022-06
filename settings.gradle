@@ -6,4 +6,6 @@ include 'hw06-annotations'
 //include 'hw08-gc:homework'
 
 //include 'hw09-docker'
-//include 'hw10-byteCodes'
+include 'hw10-byteCodes'
+include 'L10-byteCodes'
+
