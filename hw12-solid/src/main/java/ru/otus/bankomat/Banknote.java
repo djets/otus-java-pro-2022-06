@@ -4,11 +4,18 @@ import java.util.Objects;
 
 public class Banknote {
     private final String uid;
-    private final BanknoteType type = null;
-    private final int nominal = 0;
+    private final BanknoteType type;
+    private int nominal;
 
     public Banknote(BanknoteType type) {
-        this.uid = String.format("%10", (int) (Math.random() * (1 - 1_000_000_000)) + 1);
+        switch (type) {
+            case ONE_HUNDRED -> this.nominal = 100;
+            case ONE_THOUSAND -> this.nominal = 1000;
+            case TWO_THOUSAND -> this.nominal = 2000;
+            case FIVE_THOUSAND -> this.nominal = 5000;
+        }
+        this.type = type;
+        this.uid = String.format("%09d", (int) (Math.random() * (1 - 1_000_000_000)) + 1);
     }
 
     public String getUid() {

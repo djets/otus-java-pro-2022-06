@@ -1,7 +1,8 @@
 package ru.otus.bankomat;
 
 import java.util.List;
+import java.util.Queue;
 
 public interface BanknoteFactory {
-    public List<Banknote> create(int num, BanknoteType type);
+    public Queue<Banknote> create(int num, BanknoteType type);
 }

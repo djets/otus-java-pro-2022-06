@@ -1,5 +1,6 @@
 package ru.otus.bankomat;
 
+import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Queue;
 import java.util.stream.Collectors;
@@ -11,6 +12,7 @@ public class Cassette  {
     private Queue<Banknote> banknotes;
     public Cassette(BanknoteType type) {
         this.type = type;
+        this.banknotes = new ArrayDeque<>();
     }
 
     public BanknoteType getType() {
