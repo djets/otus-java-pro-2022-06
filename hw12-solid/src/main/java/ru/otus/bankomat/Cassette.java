@@ -10,13 +10,17 @@ public class Cassette  {
     private BanknoteType type;
 
     private Queue<Banknote> banknotes;
+
     public Cassette(BanknoteType type) {
         this.type = type;
         this.banknotes = new ArrayDeque<>();
     }
-
     public BanknoteType getType() {
         return type;
+    }
+
+    public Queue<Banknote> getBanknotes() {
+        return banknotes;
     }
 
     public List<Banknote> present(int number){

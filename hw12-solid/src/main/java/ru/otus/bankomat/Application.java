@@ -19,8 +19,20 @@ public class Application {
             banknoteLoadQueue.add(holder2000.poll());
             banknoteLoadQueue.add(holder5000.poll());
         }
-        dispenser.cashReceive(banknoteLoadQueue);
+        dispenser.cashLoad(banknoteLoadQueue);
         System.out.println("ATM init passed successfully \nCash balance :");
+        dispenser.getRemainingBills().forEach((k,v) -> System.out.println(k.toString() + " - " + v));
+        System.out.println("------------------------------------");
+        dispenser.cashWithdrawal(1200);
+        System.out.println("------------------------------------\nCash balance :");
+        dispenser.getRemainingBills().forEach((k,v) -> System.out.println(k.toString() + " - " + v));
+        System.out.println("------------------------------------");
+        dispenser.cashWithdrawal(1550200);
+        System.out.println("------------------------------------\nCash balance :");
+        dispenser.getRemainingBills().forEach((k,v) -> System.out.println(k.toString() + " - " + v));
+        System.out.println("------------------------------------");
+        dispenser.cashWithdrawal(62900);
+        System.out.println("------------------------------------\nCash balance :");
         dispenser.getRemainingBills().forEach((k,v) -> System.out.println(k.toString() + " - " + v));
     }
 }

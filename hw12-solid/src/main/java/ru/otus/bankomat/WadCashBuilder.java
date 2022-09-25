@@ -1,7 +1,8 @@
 package ru.otus.bankomat;
 
-import java.util.Map;
+import java.util.List;
+import java.util.Queue;
 
 public interface WadCashBuilder {
-    public WadOfCash createWadCash(Map<Cassette, Integer> remainingBills);
+    WadOfCash createWadCash(int sum, Queue<BanknoteType> remainingBills, List<Cassette> cassettes);
 }

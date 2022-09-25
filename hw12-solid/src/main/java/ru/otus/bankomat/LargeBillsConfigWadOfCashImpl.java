@@ -1,13 +1,10 @@
 package ru.otus.bankomat;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class LargeBillsConfigWadOfCashImpl implements ConfigWadOfCash {
     @Override
-    //todo реализовать конфигуратор выдачи
-    public Map<Cassette, Integer> getConfigWadOfCash(int sum, Map<BanknoteType, Integer> remainingBills) {
-        Map<Cassette, Integer> largeBillsConfigWadOfCashImpl = new HashMap<>();
-        return largeBillsConfigWadOfCashImpl;
+    public Queue<BanknoteType> getConfigWadOfCash() {
+        return new ArrayDeque<>(Arrays.asList(BanknoteType.FIVE_THOUSAND, BanknoteType.TWO_THOUSAND, BanknoteType.ONE_THOUSAND, BanknoteType.ONE_HUNDRED));
     }
 }

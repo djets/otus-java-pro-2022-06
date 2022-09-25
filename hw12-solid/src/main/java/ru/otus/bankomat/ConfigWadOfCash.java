@@ -1,7 +1,8 @@
 package ru.otus.bankomat;
 
 import java.util.Map;
+import java.util.Queue;
 
 public interface ConfigWadOfCash {
-    public Map<Cassette, Integer> getConfigWadOfCash(int sum, Map<BanknoteType, Integer> remainingBills);
+    public Queue<BanknoteType> getConfigWadOfCash();
 }

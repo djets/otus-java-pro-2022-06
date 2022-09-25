@@ -32,11 +32,15 @@ public class Dispenser {
     public void cashWithdrawal(int sum){
         var wadCashBuilder = new WadCashBuilderImplToWithdraw();
         var configWadOfCash = new LargeBillsConfigWadOfCashImpl();
-        var wadCash = wadCashBuilder.createWadCash(configWadOfCash.getConfigWadOfCash(sum, getRemainingBills()));
+        var wadCash = wadCashBuilder.createWadCash(sum, configWadOfCash.getConfigWadOfCash(), cassettes);
         presenter.withdraw(wadCash);
+        System.out.printf("Present: %d%n", sum);
+        cassettes.forEach(cassette ->
+                remainingBills.computeIfPresent(cassette.getType(), (b, i) -> cassette.getBanknotes().size())
+        );
     }
 
-    public void cashReceive(Queue<Banknote> cashList){
+    public void cashLoad(Queue<Banknote> cashList){
         cashReceiver.getAndPutCash(cashList, getRemainingBills());
     }
 
