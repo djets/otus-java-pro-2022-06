@@ -2,6 +2,8 @@ package ru.otus.bankomat;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
+import java.util.Random;
+import java.util.stream.Stream;
 
 public class Application {
     public static void main(String[] args) {
@@ -22,17 +24,15 @@ public class Application {
         dispenser.cashLoad(banknoteLoadQueue);
         System.out.println("ATM init passed successfully \nCash balance :");
         dispenser.getRemainingBills().forEach((k,v) -> System.out.println(k.toString() + " - " + v));
-        System.out.println("------------------------------------");
-        dispenser.cashWithdrawal(1200);
-        System.out.println("------------------------------------\nCash balance :");
-        dispenser.getRemainingBills().forEach((k,v) -> System.out.println(k.toString() + " - " + v));
-        System.out.println("------------------------------------");
-        dispenser.cashWithdrawal(1550200);
-        System.out.println("------------------------------------\nCash balance :");
-        dispenser.getRemainingBills().forEach((k,v) -> System.out.println(k.toString() + " - " + v));
-        System.out.println("------------------------------------");
-        dispenser.cashWithdrawal(62900);
-        System.out.println("------------------------------------\nCash balance :");
-        dispenser.getRemainingBills().forEach((k,v) -> System.out.println(k.toString() + " - " + v));
+        Stream.iterate(1, n-> n + 1).limit(4).forEach(integer -> {
+            System.out.println("------------------------------------");
+            int r = 1;
+            while (r % 100 != 0) {
+                r = ((int) (Math.random() * (1_000_000 - 100)) + 100);
+            }
+            dispenser.cashWithdrawal(r);
+            System.out.println("------------------------------------\nCash balance :");
+            dispenser.getRemainingBills().forEach((k,v) -> System.out.println(k.toString() + " - " + v));
+        });
     }
 }

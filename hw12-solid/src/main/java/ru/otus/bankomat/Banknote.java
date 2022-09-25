@@ -15,7 +15,7 @@ public class Banknote {
             case FIVE_THOUSAND -> this.nominal = 5000;
         }
         this.type = type;
-        this.uid = String.format("%09d", (int) (Math.random() * (1 - 1_000_000_000)) + 1);
+        this.uid = String.format("%09d", (int) (Math.random() * (1_000_000_000 - 1)) + 1);
     }
 
     public String getUid() {
