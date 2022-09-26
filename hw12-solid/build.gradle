@@ -1,0 +1,24 @@
+plugins {
+    id 'java'
+}
+
+group 'ru.otus.java-pro-2206.hw'
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation "org.assertj:assertj-core"
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testRuntimeClasspath "org.junit.jupiter:junit-jupiter-engine"
+    testImplementation "org.mockito:mockito-core"
+    testImplementation "org.mockito:mockito-junit-jupiter"
+}
+
+test {
+    useJUnitPlatform()
+}
