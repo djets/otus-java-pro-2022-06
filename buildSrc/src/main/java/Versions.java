@@ -5,4 +5,5 @@ public interface Versions {
     String assertjCore = "3.23.1";
     String unitJupiterApi = "5.8.2";
     String unitJupiterEngine = "5.8.2";
+    String glassfishJson = "2.0.1";
 }
