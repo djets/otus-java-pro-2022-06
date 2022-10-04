@@ -1,6 +1,6 @@
 package otus.dataprocessor;
 
-import ru.otus.model.Measurement;
+import otus.model.Measurement;
 
 import java.util.List;
 

@@ -1,15 +1,16 @@
 package otus.dataprocessor;
 
-import ru.otus.model.Measurement;
+import otus.model.Measurement;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ProcessorAggregator implements Processor {
 
     @Override
     public Map<String, Double> process(List<Measurement> data) {
         //группирует выходящий список по name, при этом суммирует поля value
-        return null;
+        return data.stream().sorted(Comparator.comparing(Measurement::getName)).collect(Collectors.toMap(
+                k -> k.getName(), v -> v.getValue(), (vOld, vNew) -> vOld + vNew, LinkedHashMap::new));
     }
 }
