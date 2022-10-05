@@ -10,6 +10,7 @@ import ru.otus.processor.ProcessorUpperField10;
 import ru.otus.processor.homework.ProcessorEvenSeconds;
 import ru.otus.processor.homework.ProcessorSwapFields;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class HomeWork {
@@ -35,7 +36,7 @@ public class HomeWork {
            из элеменов "to do" создать new ComplexProcessor и обработать сообщение
          */
 
-        var processors = List.of(new ProcessorEvenSeconds(), new ProcessorConcatFields(),
+        var processors = List.of(new ProcessorEvenSeconds(LocalDateTime::now), new ProcessorConcatFields(),
                 new LoggerProcessor(new ProcessorUpperField10()), new ProcessorSwapFields());
 
         var complexProcessor = new ComplexProcessor(processors, ex -> {});

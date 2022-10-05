@@ -1,6 +1,9 @@
 package ru.otus.model;
 
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.Arrays;
+import java.util.List;
 
 public class Message {
     private final long id;
@@ -81,12 +84,15 @@ public class Message {
     public String getField10() {
         return field10;
     }
+
     public String getField11() {
         return field11;
     }
+
     public String getField12() {
         return field12;
     }
+
     public ObjectForMessage getField13() {
         return field13;
     }
@@ -128,6 +134,13 @@ public class Message {
                 ", field12='" + field12 + '\'' +
                 ", field13='" + Arrays.asList(field13) + '\'' +
                 '}';
+    }
+
+    //Добавлен метод
+    public Message clone() {
+        var clone = new Message(id, field1, field2, field3, field4, field5, field6, field7, field8, field9, field10, field11, field12, new ObjectForMessage());
+        clone.getField13().setData(List.copyOf(getField13().getData()));
+        return clone;
     }
 
     public static class Builder {
@@ -216,14 +229,17 @@ public class Message {
             this.field10 = field10;
             return this;
         }
+
         public Builder field11(String field11) {
             this.field11 = field11;
             return this;
         }
+
         public Builder field12(String field12) {
             this.field12 = field12;
             return this;
         }
+
         public Builder field13(ObjectForMessage field13) {
             this.field13 = field13;
             return this;

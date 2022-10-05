@@ -3,21 +3,17 @@ package ru.otus.processor.homework;
 import ru.otus.model.Message;
 import ru.otus.processor.Processor;
 
-import java.time.LocalTime;
-
 public class ProcessorEvenSeconds implements Processor {
-    long evenSecond;
-    public ProcessorEvenSeconds() {
-        evenSecond = LocalTime.now().getSecond();
+    private final DateTimeProvider dateTimeProvider;
+
+    public ProcessorEvenSeconds(DateTimeProvider dateTimeProvider) {
+        this.dateTimeProvider = dateTimeProvider;
     }
-    public ProcessorEvenSeconds(long setTime) {
-        this.evenSecond = setTime;
-    }
+
     @Override
     public Message process(Message message) {
-        if (evenSecond % 2 == 0) {
-            throw new RuntimeException("Четная секунда");
-        }
+        if(dateTimeProvider.getDate().getSecond() %2 == 0)
+            throw new RuntimeException();
         return null;
     }
 }
