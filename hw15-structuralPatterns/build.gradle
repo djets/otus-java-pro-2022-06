@@ -16,7 +16,6 @@ dependencies {
     testImplementation "org.assertj:assertj-core"
     testImplementation "org.mockito:mockito-core"
     testImplementation "org.mockito:mockito-junit-jupiter"
-    implementation ""
 }
 
 test {

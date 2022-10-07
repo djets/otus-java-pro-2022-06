@@ -20,7 +20,7 @@ public class HistoryListener implements Listener, HistoryReader {
         try {
             return Optional.of(messageStack.get(id));
         } catch (Exception e) {
-            throw new UnsupportedOperationException();
+            throw new RuntimeException(e);
         }
     }
 }
