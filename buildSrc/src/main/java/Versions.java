@@ -13,4 +13,6 @@ public interface Versions {
     String cassandra = "4.15.0";
     String neo4j = "4.4.9";
     String jedis = "4.2.3";
+    String flyway = "9.4.0";
+    String hikari = "5.0.1";
 }
