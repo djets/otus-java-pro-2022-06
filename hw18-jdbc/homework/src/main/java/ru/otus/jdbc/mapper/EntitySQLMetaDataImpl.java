@@ -13,29 +13,38 @@ public class EntitySQLMetaDataImpl implements EntitySQLMetaData{
 
     @Override
     public String getSelectAllSql() {
-        return "select * from " + entityClassMetaData.getName();
+        return "SELECT * FROM " + entityClassMetaData.getName();
     }
 
     @Override
     public String getSelectByIdSql() {
-        return "select id, name from " + entityClassMetaData.getName() + " where id  = ?";
+        Field fieldName = (Field) entityClassMetaData.getFieldsWithoutId().get(0);
+        var id = entityClassMetaData.getIdField().getName();
+        var name = fieldName.getName();
+        return "SELECT " + id + ", " + name + " FROM " + entityClassMetaData.getName() + " WHERE " + id + " = ?";
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public String getInsertSql() {
-        List<Field> fieldList = (List<Field>) entityClassMetaData.getFieldsWithoutId();
-        if (fieldList.size() > 1) {
-            var fieldsNameString = fieldList.stream().map(Field::getName)
-                    .map(s -> "(" + s + ") values (?)")
+        List<Field> fieldsWithoutId = (List<Field>) entityClassMetaData.getFieldsWithoutId();
+        if (fieldsWithoutId.size() > 1) {
+            var fieldsNameString = fieldsWithoutId.stream().map(Field::getName)
+//                    .map(s -> "(" + s + ") values (?)")
+
                     .collect(Collectors.joining(", "));
-            return "insert into " + entityClassMetaData.getName() + fieldsNameString;
+            var jocker = fieldsWithoutId.stream().map(field -> "?")
+                    .collect(Collectors.joining(", "));
+            return "insert into " + entityClassMetaData.getName() + "(" + fieldsNameString + ") values (" + jocker + ")";
         }
-        return "insert into " + entityClassMetaData.getName() + "(name) values (?)";
+        return "INSERT INTO " + entityClassMetaData.getName() + "(name) VALUES (?)";
     }
 
     @Override
     public String getUpdateSql() {
-        return "update " + entityClassMetaData.getName() + " set name = ? where id = ?";
+        Field fieldName = (Field) entityClassMetaData.getFieldsWithoutId().get(0);
+        var id = entityClassMetaData.getIdField().getName();
+        var name = fieldName.getName();
+        return "UPDATE " + entityClassMetaData.getName() + " set " + name + " = ? where " + id + " = ?";
     }
 }

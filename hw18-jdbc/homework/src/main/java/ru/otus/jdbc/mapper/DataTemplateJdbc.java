@@ -7,6 +7,7 @@ import ru.otus.core.repository.executor.DbExecutor;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -36,7 +37,13 @@ public class DataTemplateJdbc<T> implements DataTemplate<T> {
                 initArguments[i] = (rs.getLong(fl.getName()));
             }
             if (prt == fl.getType() && prt == String.class) {
-                initArguments[i] = (rs.getString(fl.getName()));
+                ResultSetMetaData metaData = rs.getMetaData();
+                //Проверка на наличие column именем равным fl.getName
+                for (int im = 1; im <= metaData.getColumnCount(); im++) {
+                    if (fl.getName().equals(metaData.getColumnName(im))) {
+                        initArguments[i] = (rs.getString(fl.getName()));
+                    }
+                }
             }
         }
         return initArguments;
@@ -44,7 +51,6 @@ public class DataTemplateJdbc<T> implements DataTemplate<T> {
 
     @Override
     public Optional<T> findById(Connection connection, long id) {
-        //передать параметры конструктора, полей в newInstance
         return dbExecutor.executeSelect(connection, entitySQLMetaData.getSelectByIdSql(), List.of(id), rs -> {
             try {
                 if (rs.next()) {
