@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class EntitySQLMetaDataImpl implements EntitySQLMetaData{
+public class EntitySQLMetaDataImpl implements EntitySQLMetaData {
     private final EntityClassMetaData entityClassMetaData;
 
     public EntitySQLMetaDataImpl(EntityClassMetaData entityClassMetaData) {
@@ -33,8 +33,7 @@ public class EntitySQLMetaDataImpl implements EntitySQLMetaData{
 //                    .map(s -> "(" + s + ") values (?)")
 
                     .collect(Collectors.joining(", "));
-            var jocker = fieldsWithoutId.stream().map(field -> "?")
-                    .collect(Collectors.joining(", "));
+            var jocker = fieldsWithoutId.stream().map(field -> "?").collect(Collectors.joining(", "));
             return "insert into " + entityClassMetaData.getName() + "(" + fieldsNameString + ") values (" + jocker + ")";
         }
         return "INSERT INTO " + entityClassMetaData.getName() + "(name) VALUES (?)";

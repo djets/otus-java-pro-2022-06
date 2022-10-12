@@ -9,7 +9,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -88,18 +91,14 @@ public class DataTemplateJdbc<T> implements DataTemplate<T> {
     public long insert(Connection connection, T object) {
         this.object = object;
         try {
-            List<Object> params = entityClassMetaData.getFieldsWithoutId()
-                    .stream()
-                    .map(field -> {
-                        try {
-                            return field.get(this.object);
-                        } catch (IllegalAccessException e) {
-                            throw new RuntimeException(e);
-                        }
-                    })
-                    .collect(Collectors.toList());
+            List<Object> params = entityClassMetaData.getFieldsWithoutId().stream().map(field -> {
+                try {
+                    return field.get(this.object);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            }).collect(Collectors.toList());
             return dbExecutor.executeStatement(connection, entitySQLMetaData.getInsertSql(), params);
-//                    Collections.singletonList(entityClassMetaData.getFieldsWithoutId().get(0).get(object)));
         } catch (Exception e) {
             throw new DataTemplateException(e);
         }
@@ -109,8 +108,8 @@ public class DataTemplateJdbc<T> implements DataTemplate<T> {
     public void update(Connection connection, T client) {
         try {
             dbExecutor.executeStatement(connection, entitySQLMetaData.getInsertSql(),
-                    List.of(entityClassMetaData.getFieldsWithoutId().get(0).get(object),
-                            entityClassMetaData.getIdField().get(object)));
+                    //хардкод id
+                    List.of(entityClassMetaData.getFieldsWithoutId().get(0).get(object), entityClassMetaData.getIdField().get(object)));
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
