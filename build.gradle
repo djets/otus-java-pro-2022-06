@@ -1,9 +1,12 @@
+import groovyjarjarantlr.Version
+
 plugins {
     id "io.spring.dependency-management" version "1.0.11.RELEASE"
     id "com.github.johnrengelman.shadow" version "7.1.2" apply false
     id "org.springframework.boot" version "2.7.2" apply false
     id "com.google.cloud.tools.jib" version "3.2.1" apply false
     id "fr.brouillard.oss.gradle.jgitver" version "0.10.0-rc03" apply false
+    id "org.flywaydb.flyway" version "9.4.0" apply false
 }
 
 allprojects {
@@ -38,6 +41,9 @@ allprojects {
             dependency ("org.mongodb:mongodb-driver-reactivestreams:${Versions.mongodbReactive}")
             dependency ("org.neo4j.driver:neo4j-java-driver:${Versions.neo4j}")
             dependency ("redis.clients:jedis:${Versions.jedis}")
+            dependency "org.flywaydb:flyway-core:${Versions.flyway}"
+            dependency "com.zaxxer:HikariCP:${Versions.hikari}"
+
         }
     }
 
