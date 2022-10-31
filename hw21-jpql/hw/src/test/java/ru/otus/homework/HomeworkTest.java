@@ -132,8 +132,6 @@ class HomeworkTest {
 
         cfg.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
         cfg.setProperty("hibernate.connection.driver_class", "org.h2.Driver");
-
-//        cfg.setProperty("hibernate.connection.driver_class", "net.sf.log4jdbc.DriverSpy");
         cfg.setProperty("hibernate.connection.url", "jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1");
 
         cfg.setProperty("hibernate.connection.username", "sa");
