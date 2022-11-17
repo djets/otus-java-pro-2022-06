@@ -4,9 +4,9 @@ import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
 import java.util.*;
 
-public class MyCache<K, V> implements HwCache <K, V> {
+public class MyCache<K, V> implements HwCache<K, V> {
 
-    private Map<K, V> whm = new WeakHashMap<>();
+    public Map<K, V> whm = new WeakHashMap<>();
     private SoftReference<List<HwListener>> listenerSoftReference = new SoftReference<>(new ArrayList<>());
 
 //Надо реализовать эти методы
@@ -15,7 +15,7 @@ public class MyCache<K, V> implements HwCache <K, V> {
     public void put(K key, V value) {
         listenerSoftReference.get().forEach(hwListener -> {
             hwListener.notify(key, value, "ADDED VALUE");
-            });
+        });
         whm.put(key, value);
     }
 

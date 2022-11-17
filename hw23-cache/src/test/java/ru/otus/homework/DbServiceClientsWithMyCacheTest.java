@@ -4,6 +4,7 @@ import ch.qos.logback.classic.Logger;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
+import otus.cachehw.MyCache;
 import otus.crm.model.Address;
 import otus.crm.model.Client;
 import otus.crm.model.Phone;
@@ -11,6 +12,8 @@ import ru.otus.base.AbstractHibernateTest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.WeakHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -27,26 +30,24 @@ class DbServiceClientsWithMyCacheTest extends AbstractHibernateTest {
     void checkingCacheFilingTest() {
         getClients(10);
 
-        var savedClients = clients.stream().peek(client -> dbServiceClient.saveClient(client)).peek(client -> System.out.println(client)).collect(Collectors.toList());
+        clients.stream().peek(client -> dbServiceClient.saveClient(client)).forEach(System.out::println);
 
         var loadedAllClients = dbServiceClient.findAll();
 
-        dbServiceClient.getClient(loadedAllClients.get(0).getId()).get().setName("NewName");
+        dbServiceClient.getClient(loadedAllClients.get(0).getId()).ifPresent(client -> client.setName("NewName"));
         dbServiceClient.saveClient(new Client("NewClient2"));
 
         loadedAllClients = dbServiceClient.findAll();
 
-        var selectAllClients = loadedAllClients.stream().map(client -> dbServiceClient.getClient(client.getId())).map(clientOptional -> clientOptional.get()).collect(Collectors.toList());
+        var selectAllClients = loadedAllClients.stream().map(client -> dbServiceClient.getClient(client.getId())).map(Optional::get).collect(Collectors.toList());
         assertThat(loadedAllClients).usingRecursiveComparison().isEqualTo(selectAllClients);
-
-        var cC = dbServiceClient.getClient(loadedAllClients.get(0).getId());
     }
 
     @Test
     @DisplayName("оцениваем скорость работы MyCache")
     void rateMyCacheTest() {
         getClients(50);
-        var savedClients = clients.stream().peek(client -> dbServiceClient.saveClient(client)).peek(client -> System.out.println(client)).collect(Collectors.toList());
+        clients.stream().peek(client -> dbServiceClient.saveClient(client)).forEach(System.out::println);
 
         long startSelect = System.currentTimeMillis();
         Stream.iterate(1, n -> n + 1).limit(10).map(i -> dbServiceClient.getClient(i)).collect(Collectors.toList());
@@ -62,13 +63,19 @@ class DbServiceClientsWithMyCacheTest extends AbstractHibernateTest {
 
     @Test
     @DisplayName("тестируем переполнеие MyCache")
-    void MyCacheTest() {
+    void MyCacheTest() throws NoSuchFieldException, IllegalAccessException {
         getClients(10);
-        clients.stream().peek(client -> dbServiceClient.saveClient(client)).peek(client -> System.out.println(client)).collect(Collectors.toList());
+        clients.stream().forEach(client -> dbServiceClient.saveClient(client));
+
         logger.info("client loaded from DB: {}\n", dbServiceClient.getClient(9).get());
         logger.info("client loaded from <MyCache>: {}\n", dbServiceClient.getClient(9).get());
         System.gc();
-
+        var field = dbServiceClient.getClass().getDeclaredField("myCache");
+        field.setAccessible(true);
+        var myCache = (MyCache) field.get(dbServiceClient);
+        var whm = (WeakHashMap<String, Client>) myCache.getClass().getDeclaredField("whm").get(myCache);
+        logger.info("After GC myCache size is: {} \n", whm.size());
+        assertThat(whm.size()).isEqualTo(0);
         logger.info("client loaded from DB: {}\n", dbServiceClient.getClient(9).get());
     }
 

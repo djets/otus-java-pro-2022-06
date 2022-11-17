@@ -48,7 +48,7 @@ public class DbServiceClientImpl implements DBServiceClient {
 
     @Override
     public Optional<Client> getClient(long id) {
-        //MyCache
+        //find MyCache
         var client = myCache.get(String.valueOf(id));
         if (client != null) {
             return Optional.ofNullable(client);
