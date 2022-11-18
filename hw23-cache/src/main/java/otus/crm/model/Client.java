@@ -1,6 +1,7 @@
-package ru.otus.crm.model;
+package otus.crm.model;
 
-import lombok.*;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -29,8 +30,8 @@ public class Client implements Cloneable {
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     @Fetch(value = FetchMode.JOIN)
     private Address address;
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Fetch(value = FetchMode.SUBSELECT)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Fetch(value = FetchMode.JOIN)
     private List<Phone> phones = new ArrayList<>();
 
     public Client(String name) {
@@ -102,12 +103,12 @@ public class Client implements Cloneable {
     public String toString() {
         return "Client{" + "id=" + id + ", " +
                 "name='" + name + '\'' +
-//                ", address=" + address.getAddress() +
-//                ", phones=" + collectionToStream(this.phones)
-//                .filter(ps -> ps instanceof Phone)
-//                .map(Phone.class::cast)
-//                .map(Phone::getNumber)
-//                .collect(Collectors.joining(", ")) +
+                ", address=" + Optional.ofNullable(address).orElse(new Address()).getAddress() +
+                ", phones=" + collectionToStream(this.phones)
+                .filter(ps -> ps instanceof Phone)
+                .map(Phone.class::cast)
+                .map(Phone::getNumber)
+                .collect(Collectors.joining(", ")) +
                 '}';
     }
 }

@@ -1,16 +1,16 @@
-package ru.otus.demo;
+package otus.demo;
 
 import org.hibernate.cfg.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.otus.core.repository.DataTemplateHibernate;
-import ru.otus.core.repository.HibernateUtils;
-import ru.otus.core.sessionmanager.TransactionManagerHibernate;
-import ru.otus.crm.dbmigrations.MigrationsExecutorFlyway;
-import ru.otus.crm.model.Address;
-import ru.otus.crm.model.Client;
-import ru.otus.crm.model.Phone;
-import ru.otus.crm.service.DbServiceClientImpl;
+import otus.core.repository.DataTemplateHibernate;
+import otus.core.repository.HibernateUtils;
+import otus.core.sessionmanager.TransactionManagerHibernate;
+import otus.crm.dbmigrations.MigrationsExecutorFlyway;
+import otus.crm.model.Address;
+import otus.crm.model.Client;
+import otus.crm.model.Phone;
+import otus.crm.service.DbServiceClientImpl;
 
 public class DbServiceDemo {
 
