@@ -3,19 +3,17 @@ package otus.cachehw;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
 import java.util.*;
+import java.util.function.Supplier;
 
 public class MyCache<K, V> implements HwCache<K, V> {
 
     public Map<K, V> whm = new WeakHashMap<>();
-    private SoftReference<List<HwListener>> listenerSoftReference = new SoftReference<>(new ArrayList<>());
+    private List<SoftReference<HwListener<K,V>>> listenerSoftReference = new ArrayList<>();
 
 //Надо реализовать эти методы
-
     @Override
     public void put(K key, V value) {
-        listenerSoftReference.get().forEach(hwListener -> {
-            hwListener.notify(key, value, "ADDED VALUE");
-        });
+        forEachListener(key, value, " ADDED VALUE");
         whm.put(key, value);
     }
 
@@ -27,9 +25,7 @@ public class MyCache<K, V> implements HwCache<K, V> {
     @Override
     public V get(K key) {
         if (key != null && whm.get(key) != null) {
-            listenerSoftReference.get().forEach(hwListener -> {
-                hwListener.notify(key, whm.get(key), " GET VALUE");
-            });
+            forEachListener(key, whm.get(key), " GET VALUE");
             return whm.get(key);
         }
         return null;
@@ -37,11 +33,17 @@ public class MyCache<K, V> implements HwCache<K, V> {
 
     @Override
     public void addListener(HwListener<K, V> listener) {
-        listenerSoftReference.get().add(listener);
+        listenerSoftReference.add(new SoftReference<>(listener));
     }
 
     @Override
     public void removeListener(HwListener<K, V> listener) {
         listener = null;
+    }
+
+    private void forEachListener(K key, V value, String action) {
+        listenerSoftReference.forEach(hwListener -> {
+            Objects.requireNonNull(hwListener.get()).notify(key, value, action);
+        });
     }
 }

@@ -17,7 +17,7 @@ public class DbServiceClientImpl implements DBServiceClient {
 
     private final DataTemplate<Client> clientDataTemplate;
     private final TransactionManager transactionManager;
-    private HwCache<String, Client> myCache = new MyCache();
+    private HwCache<String, Client> myCache = new MyCache<>();
     private final HwListener<String, Client> listener = new HwListener<>() {
         @Override
         public void notify(String key, Client value, String action) {
@@ -42,6 +42,7 @@ public class DbServiceClientImpl implements DBServiceClient {
             }
             clientDataTemplate.update(session, clientCloned);
             log.info("updated client: {}", clientCloned);
+            myCache.put(getKey(clientCloned.getId()), clientCloned);
             return clientCloned;
         });
     }
@@ -49,14 +50,14 @@ public class DbServiceClientImpl implements DBServiceClient {
     @Override
     public Optional<Client> getClient(long id) {
         //find MyCache
-        var client = myCache.get(String.valueOf(id));
+        var client = myCache.get(getKey(id));
         if (client != null) {
             return Optional.ofNullable(client);
         } else {
             return transactionManager.doInReadOnlyTransaction(session -> {
                 var clientOptional = clientDataTemplate.findById(session, id);
                 log.info("client: {}", clientOptional);
-                myCache.put(String.valueOf(id), clientOptional.get());
+                myCache.put(getKey(id), clientOptional.get());
                 return clientOptional;
             });
         }
@@ -71,5 +72,9 @@ public class DbServiceClientImpl implements DBServiceClient {
             clientList.forEach(client -> myCache.put(String.valueOf(client.getId()), client));
             return clientList;
         });
+    }
+
+    private static String getKey(long id) {
+        return String.valueOf(id);
     }
 }
